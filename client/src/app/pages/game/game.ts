@@ -1,13 +1,23 @@
-import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { SharedModule } from '../../../shared.module';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-game',
   imports: [SharedModule],
   templateUrl: './game.html',
   styles: ``,
+  animations: [
+    trigger('wordSwap', [
+      transition('* => *', [
+        style({ transform: 'translateY(20px)', opacity: 0 }),
+        animate('300ms cubic-bezier(0.18, 0.89, 0.32, 1.28)',
+          style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
+  ],
 })
 export class Game implements OnDestroy, OnInit {
   private http = inject(HttpClient);

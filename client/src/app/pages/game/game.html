@@ -42,9 +42,12 @@
       </div>
 
       <div
-        class="h-32 flex items-center justify-center bg-slate-50 rounded-2xl mb-6 border-2 border-dashed border-slate-200 px-4"
+        class="h-32 flex items-center justify-center bg-slate-50 rounded-2xl mb-6 border-2 border-dashed border-slate-200 px-4 overflow-hidden relative"
       >
-        <span class="text-3xl font-black uppercase tracking-tighter text-slate-800 leading-tight">
+        <span
+          [@wordSwap]="currentWord()"
+          class="text-3xl font-black uppercase tracking-tighter text-slate-800 text-center leading-tight"
+        >
           {{ currentWord() }}
         </span>
       </div>
