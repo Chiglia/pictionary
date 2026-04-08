@@ -1,0 +1,81 @@
+<div
+  class="relative flex flex-col items-center justify-center min-h-screen p-4 bg-linear-to-br from-indigo-500 to-purple-600 overflow-hidden"
+>
+  <div class="relative z-10 grid grid-cols-2 gap-4 mb-6 w-full max-w-md">
+    @for (t of [1, 2]; track t) {
+      <div
+        [class.ring-4]="turn() === t"
+        [class.ring-yellow-400]="turn() === t"
+        [class.scale-105]="turn() === t"
+        class="p-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl text-center transition-all duration-300"
+      >
+        <span class="block text-xs font-black text-indigo-400 uppercase tracking-widest"
+          >Team {{ t }}</span
+        >
+        <span class="text-4xl font-black text-slate-800">{{
+          t === 1 ? scores().t1 : scores().t2
+        }}</span>
+      </div>
+    }
+  </div>
+
+  <p-card
+    class="relative z-10 w-full max-w-md shadow-2xl border-none bg-white/95 backdrop-blur-md overflow-hidden"
+  >
+    <div class="text-center">
+      <div
+        class="text-6xl font-mono font-black mb-6 tracking-tighter"
+        [class.text-red-500]="timer() < 10"
+        [class.text-indigo-600]="timer() >= 10"
+      >
+        {{ timer() | number: '2.0-0' }}<span class="text-2xl ml-1">s</span>
+      </div>
+
+      <div
+        class="h-32 flex items-center justify-center bg-slate-50 rounded-xl mb-8 border-2 border-dashed border-slate-200"
+      >
+        <span class="text-4xl font-black uppercase tracking-tighter text-slate-800 px-4">
+          {{ currentWord() }}
+        </span>
+      </div>
+
+      <div class="flex gap-4">
+        <p-button
+          label="Presa!"
+          icon="pi pi-check-circle"
+          severity="success"
+          class="flex-1"
+          styleClass="h-24 text-xl font-bold rounded-2xl shadow-lg w-full"
+          (onClick)="score()"
+          [disabled]="timer() === 0"
+        />
+
+        <p-button
+          label="Passa"
+          icon="pi pi-step-forward"
+          severity="secondary"
+          class="flex-1"
+          styleClass="h-24 text-xl font-bold rounded-2xl shadow-lg w-full"
+          (onClick)="next()"
+          [disabled]="timer() === 0"
+        />
+      </div>
+
+      <p-button
+        label="Reset Partita"
+        icon="pi pi-refresh"
+        severity="danger"
+        link
+        class="mt-8"
+        (onClick)="reset()"
+      />
+    </div>
+  </p-card>
+
+  <div
+    class="absolute -top-20 -left-20 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none"
+  ></div>
+  <div
+    class="absolute -bottom-20 -right-20 w-96 h-96 bg-indigo-900/20 rounded-full blur-3xl pointer-events-none"
+  ></div>
+</div>
