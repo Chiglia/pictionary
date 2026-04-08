@@ -22,7 +22,7 @@ export class Game implements OnDestroy, OnInit {
   timer = signal(60);
   showTransition = signal(false);
   confirmReset = signal(false);
-  currentWord = signal('Caricamento...');
+  currentWord = signal('');
 
   constructor() {
     effect(() => {
