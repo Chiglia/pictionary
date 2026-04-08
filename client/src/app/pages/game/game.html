@@ -1,18 +1,28 @@
 <div
-  class="relative flex flex-col items-center justify-center min-h-screen p-4 bg-linear-to-br from-indigo-500 to-purple-600 overflow-hidden"
+  class="relative flex flex-col items-center justify-center min-h-screen p-4 bg-linear-to-br from-indigo-600 to-purple-700 overflow-hidden"
 >
-  <div class="relative z-10 grid grid-cols-2 gap-4 mb-6 w-full max-w-md">
+  <div class="absolute top-4 right-4 z-20">
+    <p-button
+      [label]="confirmReset() ? 'Sicuro?' : ''"
+      [icon]="confirmReset() ? 'pi pi-exclamation-triangle' : 'pi pi-refresh'"
+      [severity]="confirmReset() ? 'danger' : 'secondary'"
+      [styleClass]="'p-button-rounded p-button-text bg-white/10 text-white border-none'"
+      (onClick)="handleReset()"
+    />
+  </div>
+
+  <div class="relative z-10 grid grid-cols-2 gap-3 mb-4 w-full max-w-md">
     @for (t of [1, 2]; track t) {
       <div
         [class.ring-4]="turn() === t"
         [class.ring-yellow-400]="turn() === t"
-        [class.scale-105]="turn() === t"
-        class="p-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl text-center transition-all duration-300"
+        [class.opacity-50]="turn() !== t"
+        class="py-2 px-4 bg-white/10 backdrop-blur-md rounded-xl text-center border border-white/20 transition-all duration-500"
       >
-        <span class="block text-xs font-black text-indigo-400 uppercase tracking-widest"
+        <span class="block text-[9px] font-black text-indigo-200 uppercase tracking-widest"
           >Team {{ t }}</span
         >
-        <span class="text-4xl font-black text-slate-800">{{
+        <span class="text-2xl font-black text-white leading-none">{{
           t === 1 ? scores().t1 : scores().t2
         }}</span>
       </div>
@@ -20,62 +30,69 @@
   </div>
 
   <p-card
-    class="relative z-10 w-full max-w-md shadow-2xl border-none bg-white/95 backdrop-blur-md overflow-hidden"
+    class="relative z-10 w-full max-w-md shadow-2xl border-none bg-white rounded-3xl overflow-hidden"
   >
     <div class="text-center">
       <div
-        class="text-6xl font-mono font-black mb-6 tracking-tighter"
+        class="text-5xl font-mono font-black mb-4 tracking-tighter"
         [class.text-red-500]="timer() < 10"
         [class.text-indigo-600]="timer() >= 10"
       >
-        {{ timer() | number: '2.0-0' }}<span class="text-2xl ml-1">s</span>
+        {{ timer() | number: '2.0-0' }}<span class="text-xl opacity-40 ml-1">s</span>
       </div>
 
       <div
-        class="h-32 flex items-center justify-center bg-slate-50 rounded-xl mb-8 border-2 border-dashed border-slate-200"
+        class="h-32 flex items-center justify-center bg-slate-50 rounded-2xl mb-6 border-2 border-dashed border-slate-200 px-4"
       >
-        <span class="text-4xl font-black uppercase tracking-tighter text-slate-800 px-4">
+        <span class="text-3xl font-black uppercase tracking-tighter text-slate-800 leading-tight">
           {{ currentWord() }}
         </span>
       </div>
 
-      <div class="flex gap-4">
+      <div class="flex gap-2 h-20">
         <p-button
-          label="Presa!"
-          icon="pi pi-check-circle"
+          label="PRESA!"
+          icon="pi pi-check"
           severity="success"
-          class="flex-1"
-          styleClass="h-24 text-xl font-bold rounded-2xl shadow-lg w-full"
+          class="flex-[3]"
+          styleClass="h-full text-xl font-black rounded-2xl w-full shadow-lg active:scale-95 transition-transform"
           (onClick)="score()"
-          [disabled]="timer() === 0"
+          [disabled]="timer() === 0 || showTransition()"
         />
 
         <p-button
-          label="Passa"
-          icon="pi pi-step-forward"
+          icon="pi pi-fast-forward"
           severity="secondary"
           class="flex-1"
-          styleClass="h-24 text-xl font-bold rounded-2xl shadow-lg w-full"
+          styleClass="h-full rounded-2xl w-full active:scale-95 transition-transform"
           (onClick)="next()"
-          [disabled]="timer() === 0"
+          [disabled]="timer() === 0 || showTransition()"
         />
       </div>
-
-      <p-button
-        label="Reset Partita"
-        icon="pi pi-refresh"
-        severity="danger"
-        link
-        class="mt-8"
-        (onClick)="reset()"
-      />
     </div>
   </p-card>
 
-  <div
-    class="absolute -top-20 -left-20 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none"
-  ></div>
-  <div
-    class="absolute -bottom-20 -right-20 w-96 h-96 bg-indigo-900/20 rounded-full blur-3xl pointer-events-none"
-  ></div>
+  @if (showTransition()) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/98 backdrop-blur-2xl px-6"
+    >
+      <div class="text-center">
+        <div
+          class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <i class="pi pi-sync text-3xl text-indigo-900 animate-spin-slow"></i>
+        </div>
+        <h2 class="text-3xl font-black text-white mb-1 uppercase">Cambio!</h2>
+        <p class="text-indigo-200 text-lg mb-8 font-medium">
+          Tocca al <span class="text-yellow-400">Team {{ turn() }}</span>
+        </p>
+        <p-button
+          label="PRONTI"
+          icon="pi pi-play"
+          styleClass="p-button-lg p-button-rounded bg-yellow-400 text-indigo-900 border-none px-10 font-black shadow-xl"
+          (onClick)="startTurn()"
+        />
+      </div>
+    </div>
+  }
 </div>
