@@ -42,14 +42,15 @@
       </div>
 
       <div
-        class="h-32 flex items-center justify-center bg-slate-50 rounded-2xl mb-6 border-2 border-dashed border-slate-200 px-4 overflow-hidden relative"
+        class="h-40 flex items-center justify-center bg-white rounded-[2rem] mb-6 shadow-inner border-4 border-dashed border-indigo-100 overflow-hidden relative"
       >
-        <span
-          [@wordSwap]="currentWord()"
-          class="text-3xl font-black uppercase tracking-tighter text-slate-800 text-center leading-tight"
-        >
-          {{ currentWord() }}
-        </span>
+        @for (word of [currentWord()]; track word) {
+          <span
+            class="absolute text-4xl font-black uppercase tracking-widest text-indigo-600 text-center px-6 word-animation"
+          >
+            {{ word }}
+          </span>
+        }
       </div>
 
       <div class="flex gap-2 h-20">
